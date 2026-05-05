@@ -1,1 +1,40 @@
-<h1>Hi</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imadh</title>
+    <style>
+        /* Reset default margins so there is no scrollbar */
+        body {
+            margin: 0;
+            /* Force the body to be exactly the height of the screen */
+            height: 100vh; 
+            /* The modern way to center everything instantly */
+            display: grid;
+            place-items: center;
+            /* Clean dark aesthetic */
+            background-color: #0a0a0a;
+            color: #ededed;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        h1 {
+            font-size: 5rem;
+            margin: 0;
+            /* Subtle animation just to make it feel premium */
+            animation: fadeIn 2s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Hi</h1>
+
+</body>
+</html>
