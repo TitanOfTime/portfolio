@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Bot, User, Loader2, X, Sparkles, RotateCcw } from "lucide-react";
 import Image from "next/image";
+import AnimatedSnowy from "./AnimatedSnowy";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface Message {
@@ -141,23 +142,17 @@ export default function ChatPanel({ onClose }: ChatPanelProps) {
 
         {/* Avatar */}
         <div className="relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-slate-800 ring-1 ring-white/10 shadow-lg">
-          <Image
-            src="/profile/beluga.png"
-            alt="Beluga"
-            width={36}
-            height={36}
-            className="rounded-full object-cover"
-          />
+          <AnimatedSnowy size={36} />
           {/* Live green dot */}
           <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-[var(--color-surface)]" />
         </div>
 
         <div className="min-w-0 flex-1">
           <p className="text-sm font-semibold text-[var(--color-text-primary)]">
-            Beluga
+            Snowy
           </p>
           <p className="text-[10px] text-[var(--color-text-secondary)]">
-            Imadh&apos;s AI Assistant · fikra-fast-8b
+            Imadh&apos;s AI Cat
           </p>
         </div>
 
@@ -201,13 +196,7 @@ export default function ChatPanel({ onClose }: ChatPanelProps) {
                 }`}
               >
                 {msg.role === "assistant" ? (
-                  <Image
-                    src="/profile/beluga.png"
-                    alt="Beluga"
-                    width={28}
-                    height={28}
-                    className="object-cover"
-                  />
+                  <AnimatedSnowy size={28} />
                 ) : (
                   <User className="h-3.5 w-3.5" />
                 )}
@@ -238,13 +227,7 @@ export default function ChatPanel({ onClose }: ChatPanelProps) {
               className="flex items-center gap-2.5"
             >
               <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-white overflow-hidden bg-slate-800 ring-1 ring-white/10">
-                <Image
-                  src="/profile/beluga.png"
-                  alt="Beluga"
-                  width={28}
-                  height={28}
-                  className="object-cover"
-                />
+                <AnimatedSnowy size={28} />
               </div>
               <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-sm border border-white/[0.07] bg-[var(--color-surface-hover)] px-4 py-3">
                 {[0, 0.15, 0.3].map((delay, i) => (
