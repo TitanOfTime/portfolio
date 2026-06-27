@@ -1,0 +1,296 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   Houdini @property — lets CSS animate the conic-gradient angle
+   (Chrome 85+, Firefox 128+, Safari 16.4+)
+───────────────────────────────────────────────────────────── */
+@property --beam-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Theme tokens — Tailwind v4 CSS-based configuration
+───────────────────────────────────────────────────────────── */
+@theme inline {
+  /* Colors */
+  --color-background: #09090f;
+  --color-surface: #0f0f1a;
+  --color-surface-hover: #16162a;
+  --color-border: rgba(255, 255, 255, 0.07);
+  --color-border-hover: rgba(139, 92, 246, 0.4);
+  --color-text-primary: #ededf0;
+  --color-text-secondary: #9898aa;
+  --color-accent-violet: #7c3aed;
+  --color-accent-indigo: #4f46e5;
+  --color-accent-blue: #2563eb;
+  --color-accent-purple: #8b5cf6;
+
+  /* Fonts */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Custom keyframes */
+  --animate-pulse-glow: pulse-glow 2.5s ease-in-out infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-gradient: gradient-shift 8s ease infinite;
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 16px 4px rgba(139, 92, 246, 0.4),
+                  0 0 32px 8px rgba(139, 92, 246, 0.15);
+    }
+    50% {
+      box-shadow: 0 0 24px 8px rgba(139, 92, 246, 0.65),
+                  0 0 48px 16px rgba(139, 92, 246, 0.25);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-10px); }
+  }
+
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50%       { background-position: 100% 50%; }
+  }
+
+  /* ── Spinning beam border ───── */
+  @keyframes beam-spin {
+    to { --beam-angle: 360deg; }
+  }
+
+  /* ── Ambient orb drifts ─────── */
+  @keyframes orb-drift-1 {
+    0%   { transform: translate(0px, 0px)   scale(1);    }
+    33%  { transform: translate(60px, -80px) scale(1.08); }
+    66%  { transform: translate(-40px, 40px) scale(0.95); }
+    100% { transform: translate(0px, 0px)   scale(1);    }
+  }
+
+  @keyframes orb-drift-2 {
+    0%   { transform: translate(0px, 0px)    scale(1);    }
+    40%  { transform: translate(-80px, 60px) scale(1.06); }
+    80%  { transform: translate(50px, -30px) scale(0.92); }
+    100% { transform: translate(0px, 0px)    scale(1);    }
+  }
+
+  @keyframes orb-drift-3 {
+    0%   { transform: translate(0px, 0px)   scale(1);    }
+    50%  { transform: translate(70px, -50px) scale(1.1); }
+    100% { transform: translate(0px, 0px)   scale(1);    }
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Base resets
+───────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+  /* Firefox scrollbar support */
+  scrollbar-color: rgba(139, 92, 246, 0.25) var(--color-background);
+  scrollbar-width: thin;
+}
+
+/* Webkit scrollbar (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.2);
+  border-radius: 9999px;
+  border: 2px solid var(--color-background);
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.45);
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  /* Subtle dot grid — masked to a radial fade so edges stay dark */
+  background-image:
+    radial-gradient(ellipse 90% 60% at 50% 0%, rgba(139,92,246,0.07) 0%, transparent 70%),
+    radial-gradient(
+      circle,
+      rgba(255,255,255,0.035) 1px,
+      transparent 1px
+    );
+  background-size: 100% 100%, 28px 28px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Utility classes
+───────────────────────────────────────────────────────────── */
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #c084fc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-blue {
+  background: linear-gradient(135deg, #60a5fa 0%, #818cf8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Section container */
+.section-container {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+/* Card base */
+.card {
+  position: relative;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease,
+              background-color 0.3s ease;
+  /* Isolate the pseudo-element stacking context */
+  isolation: isolate;
+}
+
+/* Spinning beam border — conic-gradient sweeps around on hover */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  /* Single bright beam sweeping 360° */
+  background: conic-gradient(
+    from var(--beam-angle, 0deg) at 50% 50%,
+    transparent 0deg,
+    rgba(139, 92, 246, 0)    60deg,
+    rgba(167, 139, 250, 0.9) 120deg,
+    rgba(139, 92, 246, 0)    180deg,
+    transparent             360deg
+  );
+  /* Mask so only the 1-px border ring shows (card interior stays clean) */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  padding: 1px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  animation: beam-spin 3s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:hover {
+  border-color: transparent; /* let the animated border take over */
+  box-shadow:
+    0 0 0 1px rgba(139, 92, 246, 0.15),
+    0 0 30px rgba(139, 92, 246, 0.12),
+    0 8px 40px rgba(0, 0, 0, 0.4);
+  background-color: var(--color-surface-hover);
+}
+
+/* Background blob glows */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+/* Tech pill badge */
+.tech-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+  background-color: rgba(139, 92, 246, 0.12);
+  color: #c4b5fd;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  white-space: nowrap;
+}
+
+/* Hide scrollbar (for image carousel) */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Glow ring for avatar/icon */
+.glow-ring {
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2),
+              0 0 20px rgba(139, 92, 246, 0.15),
+              0 0 40px rgba(139, 92, 246, 0.08);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Gradient backgrounds
+───────────────────────────────────────────────────────────── */
+.hero-gradient {
+  background: radial-gradient(
+      ellipse 80% 60% at 50% -10%,
+      rgba(99, 102, 241, 0.18) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 80% 50%,
+      rgba(139, 92, 246, 0.1) 0%,
+      transparent 60%
+    );
+}
+
+.contact-gradient {
+  background: linear-gradient(
+    135deg,
+    rgba(79, 70, 229, 0.15) 0%,
+    rgba(109, 40, 217, 0.1) 50%,
+    rgba(37, 99, 235, 0.1) 100%
+  );
+  border: 1px solid rgba(139, 92, 246, 0.15);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Navbar backdrop
+───────────────────────────────────────────────────────────── */
+.navbar-blur {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background-color: rgba(9, 9, 15, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
