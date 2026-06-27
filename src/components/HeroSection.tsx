@@ -180,60 +180,118 @@ export default function HeroSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative flex items-center justify-center"
           >
-            <div className="w-full max-w-lg rounded-xl border border-white/10 bg-slate-950/65 p-4 font-mono text-xs shadow-2xl backdrop-blur-md">
-              {/* Terminal header */}
-              <div className="mb-4 flex items-center gap-1.5 border-b border-white/5 pb-2">
-                <span className="h-2.5 w-2.5 rounded-full bg-red-500/80" />
-                <span className="h-2.5 w-2.5 rounded-full bg-yellow-500/80" />
-                <span className="h-2.5 w-2.5 rounded-full bg-green-500/80" />
-                <span className="ml-2 text-[10px] text-[var(--color-text-secondary)]">bash - portfolio.json</span>
-              </div>
-              {/* Code output */}
-              <pre className="overflow-x-auto text-[var(--color-text-secondary)] scrollbar-hide">
-                <code>
-                  {mockCode.split("\n").map((line, i) => {
-                    // Simple syntax coloring highlights
-                    let coloredLine = line;
-                    if (line.includes('"')) {
-                      coloredLine = line.replace(
-                        /(".*?"):/g,
-                        '<span class="text-violet-400">$1</span>:'
-                      ).replace(
-                        /: (".*?")/g,
-                        ': <span class="text-emerald-400">$1</span>'
+            {/* ── Aurora border wrapper ───────────────────────────────── */}
+            <div className="relative w-full max-w-lg">
+
+              {/* Layer 1: Outer soft glow halo — pulses independently */}
+              <div
+                className="pointer-events-none absolute -inset-3 rounded-2xl opacity-50"
+                style={{
+                  background:
+                    "radial-gradient(ellipse at 50% 50%, rgba(139,92,246,0.25) 0%, rgba(79,70,229,0.1) 50%, transparent 75%)",
+                  animation: "pulse-glow 3s ease-in-out infinite",
+                }}
+              />
+
+              {/* Layer 2: Spinning conic-gradient beam border */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -inset-[1.5px] rounded-xl"
+                style={{
+                  background:
+                    "conic-gradient(from var(--beam-angle, 0deg) at 50% 50%, transparent 0deg, rgba(139,92,246,0) 60deg, rgba(167,139,250,0.95) 120deg, rgba(99,102,241,0.7) 160deg, rgba(139,92,246,0) 200deg, transparent 360deg)",
+                  WebkitMask:
+                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "destination-out",
+                  maskComposite: "exclude",
+                  padding: "1.5px",
+                  animation: "beam-spin 2.8s linear infinite",
+                }}
+              />
+
+              {/* Layer 3: Second counter-spin beam for depth (offset 180°) */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -inset-[1.5px] rounded-xl opacity-40"
+                style={{
+                  background:
+                    "conic-gradient(from calc(var(--beam-angle, 0deg) + 180deg) at 50% 50%, transparent 0deg, rgba(79,70,229,0) 80deg, rgba(129,140,248,0.6) 120deg, rgba(79,70,229,0) 160deg, transparent 360deg)",
+                  WebkitMask:
+                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "destination-out",
+                  maskComposite: "exclude",
+                  padding: "1.5px",
+                  animation: "beam-spin 2.8s linear infinite",
+                }}
+              />
+
+              {/* Layer 4: Static corner-accent glow (always visible, no animation) */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -inset-px rounded-xl opacity-30"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(167,139,250,0.5) 0%, transparent 40%, transparent 60%, rgba(99,102,241,0.4) 100%)",
+                  WebkitMask:
+                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "destination-out",
+                  maskComposite: "exclude",
+                  padding: "1px",
+                }}
+              />
+
+              {/* Terminal card */}
+              <div className="relative w-full rounded-xl border border-white/[0.06] bg-slate-950/80 p-4 font-mono text-xs shadow-2xl backdrop-blur-md">
+
+                {/* Inner shimmer overlay on card surface */}
+                <div
+                  className="pointer-events-none absolute inset-0 rounded-xl opacity-[0.03]"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, rgba(255,255,255,0.8) 0%, transparent 50%, rgba(255,255,255,0.1) 100%)",
+                  }}
+                />
+
+                {/* Terminal header */}
+                <div className="mb-4 flex items-center gap-1.5 border-b border-white/5 pb-2">
+                  <span className="h-2.5 w-2.5 rounded-full bg-red-500/80" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-yellow-500/80" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-green-500/80" />
+                  <span className="ml-2 text-[10px] text-[var(--color-text-secondary)]">portfolio.json</span>
+                </div>
+                {/* Code output */}
+                <pre className="overflow-x-auto text-[var(--color-text-secondary)] scrollbar-hide">
+                  <code>
+                    {mockCode.split("\n").map((line, i) => {
+                      let coloredLine = line;
+                      if (line.includes('"')) {
+                        coloredLine = line.replace(
+                          /(".*?"):/g,
+                          '<span class="text-violet-400">$1</span>:'
+                        ).replace(
+                          /: (".*?")/g,
+                          ': <span class="text-emerald-400">$1</span>'
+                        );
+                      }
+                      return (
+                        <span
+                          key={i}
+                          className="block"
+                          dangerouslySetInnerHTML={{ __html: coloredLine }}
+                        />
                       );
-                    }
-                    return (
-                      <span
-                        key={i}
-                        className="block"
-                        dangerouslySetInnerHTML={{ __html: coloredLine }}
-                      />
-                    );
-                  })}
-                </code>
-              </pre>
+                    })}
+                  </code>
+                </pre>
+              </div>
+
             </div>
           </motion.div>
 
+
         </div>
 
-        {/* Scroll down indicator */}
-        <div className="mt-12 flex justify-center">
-          <a
-            href="#about"
-            className="flex flex-col items-center gap-1 text-xs text-[var(--color-text-secondary)] opacity-60 transition-opacity hover:opacity-100"
-            aria-label="Scroll down"
-          >
-            <span>Scroll</span>
-            <motion.div
-              animate={{ y: [0, 5, 0] }}
-              transition={{ duration: 1.4, repeat: Infinity }}
-            >
-              <ArrowDown className="h-4 w-4" />
-            </motion.div>
-          </a>
-        </div>
+
 
       </div>
     </section>

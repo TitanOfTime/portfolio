@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Bot, User, Loader2, X, Sparkles, RotateCcw } from "lucide-react";
+import Image from "next/image";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 interface Message {
@@ -24,8 +25,7 @@ function generateId() {
 const INITIAL_MESSAGE: Message = {
   id: "init",
   role: "assistant",
-  content:
-    "Hey! I'm Imadh's AI assistant. Ask me anything about his projects, tech stack, or experience. 👋",
+  content: "Meow! Ask me about my owner",
   timestamp: new Date(),
 };
 
@@ -140,18 +140,24 @@ export default function ChatPanel({ onClose }: ChatPanelProps) {
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-violet-600/10 to-indigo-600/5" />
 
         {/* Avatar */}
-        <div className="relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 shadow-lg shadow-violet-500/20">
-          <Bot className="h-4.5 w-4.5 text-white" />
+        <div className="relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-slate-800 ring-1 ring-white/10 shadow-lg">
+          <Image
+            src="/profile/beluga.png"
+            alt="Beluga"
+            width={36}
+            height={36}
+            className="rounded-full object-cover"
+          />
           {/* Live green dot */}
           <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-[var(--color-surface)]" />
         </div>
 
         <div className="min-w-0 flex-1">
           <p className="text-sm font-semibold text-[var(--color-text-primary)]">
-            Ask Imadh&apos;s AI
+            Beluga
           </p>
           <p className="text-[10px] text-[var(--color-text-secondary)]">
-            Powered by Fikra API · fikra-fast-8b
+            Imadh&apos;s AI Assistant · fikra-fast-8b
           </p>
         </div>
 
@@ -188,14 +194,20 @@ export default function ChatPanel({ onClose }: ChatPanelProps) {
             >
               {/* Icon */}
               <div
-                className={`mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-white ${
+                className={`mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-white overflow-hidden ${
                   msg.role === "assistant"
-                    ? "bg-gradient-to-br from-violet-600 to-indigo-600 shadow-md shadow-violet-500/20"
+                    ? "bg-slate-800 ring-1 ring-white/10"
                     : "bg-white/10 ring-1 ring-white/10"
                 }`}
               >
                 {msg.role === "assistant" ? (
-                  <Sparkles className="h-3.5 w-3.5" />
+                  <Image
+                    src="/profile/beluga.png"
+                    alt="Beluga"
+                    width={28}
+                    height={28}
+                    className="object-cover"
+                  />
                 ) : (
                   <User className="h-3.5 w-3.5" />
                 )}
@@ -225,8 +237,14 @@ export default function ChatPanel({ onClose }: ChatPanelProps) {
               transition={{ duration: 0.2 }}
               className="flex items-center gap-2.5"
             >
-              <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 shadow-md shadow-violet-500/20">
-                <Sparkles className="h-3.5 w-3.5 text-white" />
+              <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-white overflow-hidden bg-slate-800 ring-1 ring-white/10">
+                <Image
+                  src="/profile/beluga.png"
+                  alt="Beluga"
+                  width={28}
+                  height={28}
+                  className="object-cover"
+                />
               </div>
               <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-sm border border-white/[0.07] bg-[var(--color-surface-hover)] px-4 py-3">
                 {[0, 0.15, 0.3].map((delay, i) => (
