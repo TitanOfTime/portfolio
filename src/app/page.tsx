@@ -9,12 +9,14 @@ import Footer from "@/components/Footer";
 import ChatButton from "@/components/ChatButton";
 import CursorSpotlight from "@/components/CursorSpotlight";
 import AmbientOrbs from "@/components/AmbientOrbs";
+import AuroraWaves from "@/components/AuroraWaves";
 
 export default function Home() {
   return (
     <>
       {/* Ambient background layers — sit below everything */}
       <AmbientOrbs />
+      <AuroraWaves />
       <CursorSpotlight />
 
       <Navbar />

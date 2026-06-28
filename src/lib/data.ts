@@ -185,11 +185,29 @@ export const projects: Project[] = [
     // 1.png & 2.png → Next.js web dashboard (landscape/desktop)
     // 3.png – 6.png → Flutter mobile app (portrait/mobile)
     mobileImageIndices: [2, 3, 4, 5],
-    techStack: ["Next.js", "Flutter", "Firebase"],
+    techStack: ["Next.js", "Flutter", "Firebase", "Agile"],
     githubLinks: [
       { label: "Mobile Repo", url: "https://github.com/TitanOfTime/NestTrack" },
       { label: "Web Repo", url: "https://github.com/TitanOfTime/NestTrack-web" },
     ],
+  },
+  {
+    id: "campus-reserve-web",
+    slug: "campus-reserve-web",
+    title: "Campus Reserve (Web)",
+    description:
+      "Full-stack SaaS room booking platform featuring a reactive Livewire user dashboard and a secure REST API powered by Laravel Sanctum.",
+    imageUrls: [
+      "/projects/campus-reserve-web/1.png",
+      "/projects/campus-reserve-web/2.png",
+      "/projects/campus-reserve-web/3.png",
+      "/projects/campus-reserve-web/4.png",
+      "/projects/campus-reserve-web/5.png",
+      "/projects/campus-reserve-web/6.png",
+    ],
+    // All screenshots are landscape/desktop (Laravel web app)
+    techStack: ["Laravel 12", "Tailwind CSS", "MySQL", "REST API"],
+    githubLink: "https://github.com/TitanOfTime/CampusReserve-V2",
   },
   {
     id: "campus-reserve-mobile",
@@ -209,24 +227,6 @@ export const projects: Project[] = [
     mobileImageIndices: [0, 1, 2, 3, 4, 5],
     techStack: ["Flutter", "Provider"],
     githubLink: "https://github.com/TitanOfTime/CampusReserve-MAD",
-  },
-  {
-    id: "campus-reserve-web",
-    slug: "campus-reserve-web",
-    title: "Campus Reserve (Web)",
-    description:
-      "Full-stack SaaS room booking platform featuring a reactive Livewire user dashboard and a secure REST API powered by Laravel Sanctum.",
-    imageUrls: [
-      "/projects/campus-reserve-web/1.png",
-      "/projects/campus-reserve-web/2.png",
-      "/projects/campus-reserve-web/3.png",
-      "/projects/campus-reserve-web/4.png",
-      "/projects/campus-reserve-web/5.png",
-      "/projects/campus-reserve-web/6.png",
-    ],
-    // All screenshots are landscape/desktop (Laravel web app)
-    techStack: ["Laravel 12", "Tailwind CSS", "MySQL"],
-    githubLink: "https://github.com/TitanOfTime/CampusReserve-V2",
   },
   {
     id: "aegis",
