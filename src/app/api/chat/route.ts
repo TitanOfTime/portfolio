@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isRateLimited } from "@/lib/rateLimit";
-
-// ── Security: API key is ONLY accessible server-side via process.env
-// Never import or expose FIKRA_API_KEY in any client component.
-const FIKRA_BASE_URL = "https://api.fikraapi.co.ke/v1";
-const FIKRA_MODEL = "fikra-fast-8b";
+import { generateText } from "ai";
+import { google } from "@ai-sdk/google";
 
 // System prompt — gives the AI full context about Imadh's portfolio
 const SYSTEM_PROMPT = `You are an AI assistant embedded in the portfolio of Imadh Hussain, a Full-Stack Software Engineer. Your role is to help visitors learn more about Imadh's skills, projects, and experience.
@@ -48,11 +45,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Set standard Google provider environment variable using the GEMINI_API_KEY
+    if (process.env.GEMINI_API_KEY && !process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+      process.env.GOOGLE_GENERATIVE_AI_API_KEY = process.env.GEMINI_API_KEY;
+    }
+
     // 1. Validate API key presence (fail fast on misconfiguration)
-    const apiKey = process.env.FIKRA_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
-        { error: "API key not configured. Please add FIKRA_API_KEY to your environment variables." },
+        { error: "API key not configured. Please add GEMINI_API_KEY to your environment variables." },
         { status: 500 }
       );
     }
@@ -79,43 +81,19 @@ export async function POST(req: NextRequest) {
       )
       .slice(-20) // keep last 20 messages max to prevent token abuse
       .map((m: { role: string; content: string }) => ({
-        role: m.role,
+        role: m.role as "user" | "assistant",
         content: m.content.trim().slice(0, 2000), // max 2000 chars per message
       }));
 
-    // 4. Forward request to Fikra API (server-to-server, key is safe)
-    const fikraResponse = await fetch(`${FIKRA_BASE_URL}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: FIKRA_MODEL,
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          ...sanitizedMessages,
-        ],
-        max_tokens: 512,
-        temperature: 0.7,
-        stream: false,
-      }),
+    // 4. Generate response using Google Gemini provider and Vercel AI SDK
+    const { text } = await generateText({
+      model: google("gemini-3.1-flash-lite"),
+      system: SYSTEM_PROMPT,
+      messages: sanitizedMessages,
     });
 
-    if (!fikraResponse.ok) {
-      const errorText = await fikraResponse.text();
-      console.error("[Fikra API Error]", fikraResponse.status, errorText);
-      return NextResponse.json(
-        { error: "AI service error. Please try again later." },
-        { status: 502 }
-      );
-    }
-
-    const data = await fikraResponse.json();
-    const reply = data.choices?.[0]?.message?.content ?? "";
-
-    // 5. Return only the assistant reply — nothing else from upstream
-    return NextResponse.json({ reply }, { status: 200 });
+    // 5. Return only the assistant reply — matching existing JSON contract
+    return NextResponse.json({ reply: text }, { status: 200 });
   } catch (err) {
     console.error("[Chat route error]", err);
     return NextResponse.json(
