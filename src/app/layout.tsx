@@ -13,7 +13,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Imadh Hussain | Full Stack Software Engineer",
   description:
-    "Portfolio of Imadh Hussain — Full-Stack Developer and Software Engineering student specialising in React, Next.js, Flutter, Laravel, and Firebase. VP at APIIT FCS.",
+    "Portfolio of Imadh Hussain, a Full Stack Software Engineer specializing in React, Next.js, and Laravel. Building scalable web solutions.",
   keywords: [
     "Imadh Hussain",
     "Full Stack Developer",
@@ -25,10 +25,13 @@ export const metadata: Metadata = {
     "Portfolio",
   ],
   authors: [{ name: "Imadh Hussain", url: "https://imadh.com" }],
+  icons: {
+    icon: "/icon.png",
+  },
   openGraph: {
     title: "Imadh Hussain | Full Stack Software Engineer",
     description:
-      "Full-Stack Developer building scalable web and mobile applications.",
+      "Portfolio of Imadh Hussain, a Full Stack Software Engineer specializing in React, Next.js, and Laravel. Building scalable web solutions.",
     url: "https://imadh.com",
     siteName: "Imadh Hussain Portfolio",
     locale: "en_US",
@@ -38,7 +41,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Imadh Hussain | Full Stack Software Engineer",
     description:
-      "Full-Stack Developer building scalable web and mobile applications.",
+      "Portfolio of Imadh Hussain, a Full Stack Software Engineer specializing in React, Next.js, and Laravel. Building scalable web solutions.",
   },
 };
 
@@ -49,6 +52,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} dark`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "Imadh Hussain",
+              "url": "https://imadh.com/",
+            }),
+          }}
+        />
+      </head>
       <body className="min-h-screen flex flex-col antialiased">
         {children}
         <Analytics />
